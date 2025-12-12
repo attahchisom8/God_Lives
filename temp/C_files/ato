@@ -1,0 +1,114 @@
+#include "main.h"
+
+
+/**
+ * is_digit - checks if a charqcter is digitizable
+ * @c: character to check for digitization
+ *
+ *
+ * Retirn: True uf digitizable, else False
+ */
+
+bool is_digit(char c)
+{
+	int k;
+
+	for (k = 48; k <= 57; k++)
+	{
+		if  (c == k)
+			return (true);
+	}
+
+	return (false);
+}
+
+
+/**
+ * to_digit - digitize a character (convert it to digit)
+ * @c: character to convert to digit
+ *
+ * Return: the converted digit
+ */
+
+int to_digit(char c)
+{
+	if (c == '\0')
+		return (0);
+	return (c - '0');
+}
+
+
+
+
+/**
+ * digits_len - get the number of digitixable characters in a string
+ * @str: pointer to the given string
+ *
+ * Return: number of digitizable characters
+ */
+
+size_t digits_len(const char *str)
+{
+	size_t len = 0;
+
+
+	while (*str != '\0')
+	{
+		if (is_digit(*str))
+			len++;
+		str++;
+	}
+
+	return (len);
+}
+
+
+/**
+ * _atoi - convert digitizable characters in a string to a denary number based on
+ * position in the string
+ * @str: pojnter to the given string
+ *
+ * Return: a denary number (numeral)
+ */
+
+int _atoi(const char *str)
+{
+	size_t len_digits = digits_len(str);
+	char *digits_str, *ptr;
+	int k, denary_sum = 0;
+
+	if (!len_digits)
+		return (0);
+
+	digits_str = malloc(len_digits + 1);
+	if (!digits_str)
+		return (0);
+
+	ptr = digits_str;
+	while (*str != '\0')
+	{
+		if (is_digit(*str))
+		{
+			*ptr = *str;
+			ptr++;
+		}
+		str++;
+	}
+	*ptr = '\0';
+
+	k = len_digits - 1;
+	ptr = digits_str;
+	while (k >= 0) 
+	{
+		int digit;
+
+		digit = to_digit(*ptr);
+		denary_sum += digit * _pow(10, k);
+		k--;
+		ptr++;
+
+	}
+	free(digits_str);
+
+	return (denary_sum);
+}
